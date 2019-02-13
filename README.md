@@ -4,13 +4,13 @@
 1. Hello World
  * Install JDK
  * Install Eclipse
-* Login page
+2. Login page
  * Install bootstrap 3
  * create board / menu / login page
-* Membership database
+3. Membership database
  * Install MySQL
  * create bean class (connect database to user class)
-* Login function
+4. Login function
  * create bean
  * create action.jsp
  * connect jdbc driver in library
