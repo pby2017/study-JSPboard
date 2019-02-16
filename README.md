@@ -1,16 +1,16 @@
-# [following JSP board edu streaming by 동빈나](https://youtu.be/wEIBDHfoMBg)
+# [following JSP board edu streaming by 동빈나](https://www.youtube.com/channel/UChflhu32f5EUHlY7_SetNWw)
 
 ## study curriculum
-1. Hello World
+1. [Hello World](https://youtu.be/wEIBDHfoMBg)
  * Install JDK
  * Install Eclipse
-2. Login page
+2. [Login page](https://youtu.be/MtxFWczSFqU)
  * Install bootstrap 3
  * create board / menu / login page
-3. Membership database
+3. [Membership database](https://youtu.be/kN8xRG6UPZM)
  * Install MySQL
  * create bean class (connect database to user class)
-4. Login function
+4. [Login function](https://youtu.be/RYo3OGlRoJw)
  * create bean
  * create action.jsp
  * connect jdbc driver in library
