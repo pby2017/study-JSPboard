@@ -6,18 +6,71 @@
  * Install Eclipse
 2. [Login page](https://youtu.be/MtxFWczSFqU)
  * Install bootstrap 3
- * create board / menu / login page
+ * Create board / menu / login page
 3. [Membership database](https://youtu.be/kN8xRG6UPZM)
  * Install MySQL
- * create bean class (connect database to user class)
+ * Create bean class (connect database to user class)
 4. [Login function](https://youtu.be/RYo3OGlRoJw)
- * create bean
- * create action.jsp
- * connect jdbc driver in library
-
-
+ * Create bean
+ * Create loginAction.jsp
+ * Connect jdbc driver in library
+5. [Join page](https://youtu.be/-Kbhn2TJGn4)
+ * Create join page
+6. [Join function](https://youtu.be/v2mmPRLjJGw)
+ * Create bean
+ * Create joinAction.jsp
+7. [Manage session](https://youtu.be/eJRB__ErXd4)
+ * HttpSession session
+ * Create logoutAction.jsp
+ * Move from index.jsp to main.jsp
 
 ## record
+
+# 2019 / 02 / 17 Sun
+> Create join.jsp
+
+    <div class="form-group" style="align:center;">
+        <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-primary active">
+                <input type="radio" name="userGender" autocomplete="off" value="남자" checked>남자
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="userGender" autocomplete="off" value="여자" checked>여자
+            </label>
+        </div>
+    </div>
+
+> Create joinAction.jsp
+
+    <jsp:setProperty name="user" property="userName" />
+    <jsp:setProperty name="user" property="userGender" />
+    <jsp:setProperty name="user" property="userEmail" />
+
+    int result = userDAO.join(user);
+
+> Add session
+
+    String userID = null;
+    if(session.getAttribute("userID") != null){
+        userID = (String) session.getAttribute("userID");
+    }
+
+> Add session true / false situation
+
+    <%
+        if(userID == null){ 
+    %>
+    body~~
+    <%
+        }
+    %>
+
+> Create logoutAction.jsp
+
+    <%
+		session.invalidate();
+	%>
+
 
 # 2019 / 02 / 13 Wed
 > Create User.java
