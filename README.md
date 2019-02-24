@@ -30,12 +30,13 @@
 
 # 2019 / 02 / 24 Sun
 Review
-1. Remove attributes that I don't understand how to work
-2. [Hello World](https://youtu.be/wEIBDHfoMBg)
-3. [Login page](https://youtu.be/MtxFWczSFqU)
-4. [Membership database](https://youtu.be/kN8xRG6UPZM)
-5. [Login function](https://youtu.be/RYo3OGlRoJw)
-6. [Join page](https://youtu.be/-Kbhn2TJGn4)
+* Remove attributes that I don't understand how to work
+1. [Hello World](https://youtu.be/wEIBDHfoMBg)
+2. [Login page](https://youtu.be/MtxFWczSFqU)
+3. [Membership database](https://youtu.be/kN8xRG6UPZM)
+4. [Login function](https://youtu.be/RYo3OGlRoJw)
+5. [Join page](https://youtu.be/-Kbhn2TJGn4)
+6. [Join function](https://youtu.be/v2mmPRLjJGw)
 7. [Manage session](https://youtu.be/eJRB__ErXd4)
 
 
