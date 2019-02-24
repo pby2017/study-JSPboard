@@ -27,76 +27,83 @@
 ## record
 
 # 2019 / 02 / 17 Sun
-> Create join.jsp
-
-    <div class="form-group" style="align:center;">
-        <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-primary active">
-                <input type="radio" name="userGender" autocomplete="off" value="남자" checked>남자
-            </label>
-            <label class="btn btn-primary">
-                <input type="radio" name="userGender" autocomplete="off" value="여자" checked>여자
-            </label>
-        </div>
+Create join.jsp
+```html
+<div class="form-group" style="align:center;">
+    <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary active">
+            <input type="radio" name="userGender" autocomplete="off" value="남자" checked>남자
+        </label>
+        <label class="btn btn-primary">
+            <input type="radio" name="userGender" autocomplete="off" value="여자" checked>여자
+        </label>
     </div>
+</div>
+```
 
-> Create joinAction.jsp
+Create joinAction.jsp
+```java
+<jsp:setProperty name="user" property="userName" />
+<jsp:setProperty name="user" property="userGender" />
+<jsp:setProperty name="user" property="userEmail" />
 
-    <jsp:setProperty name="user" property="userName" />
-    <jsp:setProperty name="user" property="userGender" />
-    <jsp:setProperty name="user" property="userEmail" />
+int result = userDAO.join(user);
+```
 
-    int result = userDAO.join(user);
+Add session
+```java
+String userID = null;
+if(session.getAttribute("userID") != null){
+    userID = (String) session.getAttribute("userID");
+}
+```
 
-> Add session
-
-    String userID = null;
-    if(session.getAttribute("userID") != null){
-        userID = (String) session.getAttribute("userID");
+Add session true / false situation
+```java
+<%
+    if(userID == null){ 
+%>
+body~~
+<%
     }
+%>
+```
 
-> Add session true / false situation
-
-    <%
-        if(userID == null){ 
-    %>
-    body~~
-    <%
-        }
-    %>
-
-> Create logoutAction.jsp
-
-    <%
-		session.invalidate();
-	%>
-
+Create logoutAction.jsp
+```java
+<%
+    session.invalidate();
+%>
+```
 
 # 2019 / 02 / 13 Wed
-> Create User.java
+Create User.java
+```java
+(Bean / database table connect to Object in Java)
+```
 
-    (Bean / database table connect to Object in Java)
+Create UserDAO.java
+```java
+database connect & login method
+PreparedStatement = protect from SQL injection
+```
 
-> Create UserDAO.java
+Create loginAction.jsp
+```java
+<%@ page import="user.UserDAO" %> // using UserDAO class
+<%@ page import="java.io.PrintWriter" %> // create script tag
+<% request.setCharacterEncoding("UTF-8"); %> // get request data as UTF-8 format
+<jsp:useBean id="user" class="user.User" scope="page" /> // get data as User class format & only use in this page
+<jsp:setProperty name="user" property="userID" /> // get userID from login page input value
 
-    database connect & login method
-    PreparedStatement = protect from SQL injection
-
-> Create loginAction.jsp
-
-    <%@ page import="user.UserDAO" %> // using UserDAO class
-    <%@ page import="java.io.PrintWriter" %> // create script tag
-    <% request.setCharacterEncoding("UTF-8"); %> // get request data as UTF-8 format
-    <jsp:useBean id="user" class="user.User" scope="page" /> // get data as User class format & only use in this page
-    <jsp:setProperty name="user" property="userID" /> // get userID from login page input value
-
-    <body>
-        <%
-            UserDAO userDAO = new UserDAO;
-            int result = userDAO.login(user.getUserID(), user.getUserPassword());
-            PrintWriter script = response.getWriter();
-            script.println("<script>");
-            script.println("location.href = 'main.jsp'");
-            script.println("</script>");
-        %>
-    </body>
+<body>
+    <%
+        UserDAO userDAO = new UserDAO;
+        int result = userDAO.login(user.getUserID(), user.getUserPassword());
+        PrintWriter script = response.getWriter();
+        script.println("<script>");
+        script.println("location.href = 'main.jsp'");
+        script.println("</script>");
+    %>
+</body>
+```
