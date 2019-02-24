@@ -23,17 +23,22 @@
  * HttpSession session
  * Create logoutAction.jsp
  * Move from index.jsp to main.jsp
+8. [Main page design](https://youtu.be/pCqaGoexV5c)
+ * 
 
 ## record
 
 # 2019 / 02 / 24 Sun
 Review
-* Remove attributes that I don't understand how to work
-* [Hello World](https://youtu.be/wEIBDHfoMBg)
-* [Login page](https://youtu.be/MtxFWczSFqU)
-* [Membership database](https://youtu.be/kN8xRG6UPZM)
-* [Login function](https://youtu.be/RYo3OGlRoJw)
-* [Join page](https://youtu.be/-Kbhn2TJGn4)
+1. Remove attributes that I don't understand how to work
+2. [Hello World](https://youtu.be/wEIBDHfoMBg)
+3. [Login page](https://youtu.be/MtxFWczSFqU)
+4. [Membership database](https://youtu.be/kN8xRG6UPZM)
+5. [Login function](https://youtu.be/RYo3OGlRoJw)
+6. [Join page](https://youtu.be/-Kbhn2TJGn4)
+7. [Manage session](https://youtu.be/eJRB__ErXd4)
+
+
 
 # 2019 / 02 / 17 Sun
 Create join.jsp
