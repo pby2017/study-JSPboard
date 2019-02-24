@@ -28,8 +28,8 @@
 
 # 2019 / 02 / 24 Sun
 Review
-[Hello World](https://youtu.be/wEIBDHfoMBg)
-[Login page ~10:10](https://youtu.be/MtxFWczSFqU?t=610)
+* [Hello World](https://youtu.be/wEIBDHfoMBg)
+* [Login page ~10:10](https://youtu.be/MtxFWczSFqU?t=610)
 
 # 2019 / 02 / 17 Sun
 Create join.jsp
