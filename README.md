@@ -23,12 +23,19 @@
  * HttpSession session
  * Create logoutAction.jsp
  * Move from index.jsp to main.jsp
-8. [Main page design](https://youtu.be/pCqaGoexV5c)
- * 
+8. [Board page design](https://youtu.be/pCqaGoexV5c)
+ * Create bbs.jsp
+ * Add table and write button
+9. [Board database table](https://youtu.be/OHvWkg9Bdf0)
+ * Create bean class (connect database to board class)
+10. [Write page](https://youtu.be/EmbxlHakkfY)
+ * Create write.jsp
+ * Create writeAction.jsp
+
 
 ## record
 
-# 2019 / 02 / 24 Sun
+## 2019 / 02 / 24 Sun
 Review
 * Remove attributes that I don't understand how to work
 1. [Hello World](https://youtu.be/wEIBDHfoMBg)
@@ -39,9 +46,113 @@ Review
 6. [Join function](https://youtu.be/v2mmPRLjJGw)
 7. [Manage session](https://youtu.be/eJRB__ErXd4)
 
+Create table in Board page
+```html
+<div class="row">
+    <table class="table table-striped" style="text-align:center; border:1px solid #dddddd">
+        <thead>
+            <tr>
+                <th style="backgroud-color: #eeeeee; text-align:center;">번호</th>
+                <th style="backgroud-color: #eeeeee; text-align:center;">제목</th>
+                <th style="backgroud-color: #eeeeee; text-align:center;">작성자</th>
+                <th style="backgroud-color: #eeeeee; text-align:center;">작성일</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>안녕하세요</td>
+                <td>홍길동</td>
+                <td>2017-05-04</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a>
+</div>
+```
 
+Create Bbs.java
+```java
+(Bean / database table connect to Board Object in Java)
+```
 
-# 2019 / 02 / 17 Sun
+Create write.jsp
+```java
+<form method="post" action="writeAction.jsp">
+    <table class="table table-striped"
+        style="text-align: center; border: 1px solid #dddddd">
+        <thead>
+            <tr>
+                <th colspan="2"
+                    style="backgroud-color: #eeeeee; text-align: center;">게시판
+                    글쓰기 양식</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" class="form-control"
+                    placeholder="글 제목" name="bbsTitle" maxlength="50"></td>
+            </tr>
+            <tr>
+                <td><textarea class="form-control" placeholder="글 내용"
+                        name="bbsContent" maxlength="2048" style="height: 350px;"></textarea></td>
+            </tr>
+        </tbody>
+    </table>
+    <input type="submit" class="btn btn-primary pull-right" value="글쓰기">
+</form>
+```
+
+Create writeDAO.java for posting content
+```java
+public String getDate() {
+    String SQL = "SELECT NOW()";
+    try {
+        PreparedStatement pstmt = conn.prepareStatement(SQL);
+        rs = pstmt.executeQuery();
+        if(rs.next()) {
+            return rs.getString(1);
+        }
+    }catch(Exception e) {
+        e.printStackTrace();
+    }
+    return "";
+}
+
+public int getNext() {
+    String SQL = "SELECT bbsID FROM BBS ORDER BY bbsID DESC";
+    try {
+        PreparedStatement pstmt = conn.prepareStatement(SQL);
+        rs = pstmt.executeQuery();
+        if(rs.next()) {
+            return rs.getInt(1) + 1;
+        }
+        return 1;
+    }catch(Exception e) {
+        e.printStackTrace();
+    }
+    return -1;
+}
+
+public int write(String bbsTitle, String userID, String bbsContent) {
+    String SQL = "INSERT INTO BBS VALUES (?,?,?,?,?,?)";
+    try {
+        PreparedStatement pstmt = conn.prepareStatement(SQL);
+        pstmt.setInt(1, getNext());
+        pstmt.setString(2, bbsTitle);
+        pstmt.setString(3, userID);
+        pstmt.setString(4, getDate());
+        pstmt.setString(5, bbsContent);
+        pstmt.setInt(6, 1);
+        return pstmt.executeUpdate();
+    }catch(Exception e) {
+        e.printStackTrace();
+    }
+    return -1;
+}
+```
+
+## 2019 / 02 / 17 Sun
 Create join.jsp
 ```html
 <div class="form-group" style="align:center;">
@@ -91,10 +202,10 @@ Create logoutAction.jsp
 %>
 ```
 
-# 2019 / 02 / 13 Wed
+## 2019 / 02 / 13 Wed
 Create User.java
 ```java
-(Bean / database table connect to Object in Java)
+(Bean / database table connect to User Object in Java)
 ```
 
 Create UserDAO.java
