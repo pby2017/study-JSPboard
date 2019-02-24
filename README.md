@@ -31,7 +31,22 @@
 10. [Write page](https://youtu.be/EmbxlHakkfY)
  * Create write.jsp
  * Create writeAction.jsp
-
+11. [Board page get database](https://youtu.be/Q-TzxXw2jQY)
+ * Connect board page to BBS database table
+ * Add prev and next page such 10 contents
+12. [View page select each](https://youtu.be/SC7EP8ID9D8)
+ * Add getBbs function for getting 1 content using bbsID
+ * Create view.jsp
+ * Using request.getParameter("parameter") for get 1 page or content
+13. [Content update & delete](https://youtu.be/W9NLm_RNMvI)
+ * Add update & delete function in BbsDAO.java
+ * Create UpdateAction.jsp & DeleteAction.jsp
+14. [Design main page](https://youtu.be/sFqx8zbPjEE)
+ * Add intro with jumbotron and font custom.css
+ * Add sliding picture with carousel and glyphicon
+15. [Deploy](https://youtu.be/Bb7OZobUqwc)
+ * Buy hosting server
+ * Restart hosting server for resolving class error
 
 ## record
 
@@ -150,6 +165,224 @@ public int write(String bbsTitle, String userID, String bbsContent) {
     }
     return -1;
 }
+```
+
+Add getList function in BbsDAO.java for get content from database
+```java
+public ArrayList<Bbs> getList(int pageNumber) {
+    String SQL = "SELECT * FROM BBS WHERE bbsID < ? AND bbsAvailable = 1 ORDER BY bbsID DESC LIMIT 10";
+    ArrayList<Bbs> list = new ArrayList<>();
+    try {
+        PreparedStatement pstmt = conn.prepareStatement(SQL);
+        pstmt.setInt(1, getNext() - (pageNumber - 1) * 10);
+        rs = pstmt.executeQuery();
+        while (rs.next()) {
+            Bbs bbs = new Bbs();
+            bbs.setBbsID(rs.getInt(1));
+            bbs.setBbsTitle(rs.getString(2));
+            bbs.setUserID(rs.getString(3));
+            bbs.setBbsDate(rs.getString(4));
+            bbs.setBbsContent(rs.getString(5));
+            bbs.setBbsAvailable(rs.getInt(6));
+            list.add(bbs);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return list;
+}
+```
+
+Add nextPage function in BbsDAO.java for checking next page exist
+```java
+public boolean nextPage(int pageNumber) {
+    String SQL = "SELECT * FROM BBS WHERE bbsID < ? AND bbsAvailable = 1 ORDER BY bbsID DESC LIMIT 10";
+    try {
+        PreparedStatement pstmt = conn.prepareStatement(SQL);
+        pstmt.setInt(1, getNext() - (pageNumber - 1) * 10);
+        rs = pstmt.executeQuery();
+        if (rs.next()) {
+            return true;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+```
+
+Add getBbs function in BbsDAO.java for getting 1 content using bbsID
+```java
+public Bbs getBbs(int bbsID) {
+    String SQL = "SELECT * FROM BBS WHERE bbsID = ?";
+    try {
+        PreparedStatement pstmt = conn.prepareStatement(SQL);
+        pstmt.setInt(1, bbsID);
+        rs = pstmt.executeQuery();
+        if (rs.next()) {
+            Bbs bbs = new Bbs();
+            bbs.setBbsID(rs.getInt(1));
+            bbs.setBbsTitle(rs.getString(2));
+            bbs.setUserID(rs.getString(3));
+            bbs.setBbsDate(rs.getString(4));
+            bbs.setBbsContent(rs.getString(5));
+            bbs.setBbsAvailable(rs.getInt(6));
+            return bbs;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+```
+
+Create view.jsp
+```java
+<table class="table table-striped"
+    style="text-align: center; border: 1px solid #dddddd">
+    <thead>
+        <tr>
+            <th colspan="3"
+                style="backgroud-color: #eeeeee; text-align: center;">게시판 글
+                보기</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="width: 20%;">글 제목</td>
+            <td colspan="2"><%=bbs.getBbsTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+        .replaceAll("\n", "<br>")%></td>
+        </tr>
+        <tr>
+            <td>작성자</td>
+            <td colspan="2"><%=bbs.getUserID()%></td>
+        </tr>
+        <tr>
+            <td>작성일자</td>
+            <td colspan="2"><%=bbs.getBbsDate().substring(0, 11) + bbs.getBbsDate().substring(11, 13) + "시"
+        + bbs.getBbsDate().substring(14, 16) + "분"%></td>
+        </tr>
+        <tr>
+            <td>내용</td>
+            <td colspan="2" style="min-height: 200px; text-align: left;"><%=bbs.getBbsContent().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+        .replaceAll("\n", "<br>")%></td>
+        </tr>
+    </tbody>
+</table>
+<a href="bbs.jsp" class="btn btn-primary">목록</a>
+<%
+    if (userID != null && userID.equals(bbs.getUserID())) {
+%>
+<a href="update.jsp?bbsID=<%=bbsID%>" class="btn btn-primary">수정</a>
+<a href="deleteAction.jsp?bbsID=<%=bbsID%>" class="btn btn-primary">삭제</a>
+<%
+    }
+%>
+```
+
+Add update function in BbsDAO.java for updating content
+```java
+public int update(int bbsID, String bbsTitle, String bbsContent) {
+    String SQL = "UPDATE BBS SET bbsTitle=?, bbsContent=? WHERE bbsID=?";
+    try {
+        PreparedStatement pstmt = conn.prepareStatement(SQL);
+        pstmt.setString(1, bbsTitle);
+        pstmt.setString(2, bbsContent);
+        pstmt.setInt(3, bbsID);
+        return pstmt.executeUpdate();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return -1;
+}
+```
+
+Add delete function in BbsDAO.java for delete content
+```java
+public int delete(int bbsID) {
+    String SQL = "UPDATE BBS SET bbsAvailable = 0 WHERE bbsID = ?";
+    try {
+        PreparedStatement pstmt = conn.prepareStatement(SQL);
+        pstmt.setInt(1, bbsID);
+        return pstmt.executeUpdate();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return -1;
+}
+```
+
+Create updateAction.jsp
+```java
+String userID = null;
+if (session.getAttribute("userID") != null) {
+    userID = (String) session.getAttribute("userID");
+}
+int bbsID = 0;
+if (request.getParameter("bbsID") != null) {
+    bbsID = Integer.parseInt(request.getParameter("bbsID"));
+}
+...
+BbsDAO bbsDAO = new BbsDAO();
+int result = bbsDAO.update(bbsID, request.getParameter("bbsTitle"), request.getParameter("bbsContent"));
+```
+
+Create deleteAction.jsp
+```java
+String userID = null;
+if (session.getAttribute("userID") != null) {
+    userID = (String) session.getAttribute("userID");
+}
+int bbsID = 0;
+if (request.getParameter("bbsID") != null) {
+    bbsID = Integer.parseInt(request.getParameter("bbsID"));
+}
+...
+BbsDAO bbsDAO = new BbsDAO();
+int result = bbsDAO.delete(bbsID);
+```
+
+Design main.jsp intro with jumbotron and font custom.css
+```html
+<div class="container">
+    <div class="jumbotron">
+        <div class="container">
+            <h1>웹 사이트 소개</h1>
+            <p>이 웹 사이트는 ...</p>
+            <a class="btn btn-primary btn-pull" href="#" role="button">자세히 알아보기</a>
+        </div>
+    </div>
+</div>
+```
+
+Design main.jsp sliding picture with carousel and glyphicon
+```html
+<div class="container">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="item active">
+                <img src="images/야경1.jpg">
+            </div>
+            <div class="item">
+                <img src="images/야경2.jpg">
+            </div>
+            <div class="item">
+                <img src="images/야경3.jpg">
+            </div>
+        </div>
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>				
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>				
+        </a>
+    </div>
+</div>
 ```
 
 ## 2019 / 02 / 17 Sun
