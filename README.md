@@ -28,8 +28,12 @@
 
 # 2019 / 02 / 24 Sun
 Review
+* Remove attributes that I don't understand how to work
 * [Hello World](https://youtu.be/wEIBDHfoMBg)
-* [Login page ~10:10](https://youtu.be/MtxFWczSFqU?t=610)
+* [Login page](https://youtu.be/MtxFWczSFqU)
+* [Membership database](https://youtu.be/kN8xRG6UPZM)
+* [Login function](https://youtu.be/RYo3OGlRoJw)
+* [Join page](https://youtu.be/-Kbhn2TJGn4)
 
 # 2019 / 02 / 17 Sun
 Create join.jsp
